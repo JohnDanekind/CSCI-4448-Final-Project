@@ -12,4 +12,13 @@ public class Pit {
     public void addStones(int stoneCount) {
         this.stoneCount += stoneCount;
     }
+
+    public int removeAllStones() {
+        int priorStoneCount = stoneCount;
+
+        // clear out all stones
+        stoneCount = 0;
+
+        return priorStoneCount;
+    }
 }

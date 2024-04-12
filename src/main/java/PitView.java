@@ -1,5 +1,5 @@
 import java.awt.*;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class PitView extends JPanel {
 
@@ -7,11 +7,24 @@ public class PitView extends JPanel {
     Color pitColor = Color.WHITE;
     Color textColor = Color.BLACK;
     Color backgroundColor;
+    int number;
+    int player;
+    BoardView boardView;
 
-    public PitView(int count, Color backgroundColor) {
-        this.count = count;
+    public PitView(BoardView boardView, int player, int number, Color backgroundColor) {
+        this.boardView = boardView;
+        this.player = player;
+        this.number = number;
         this.backgroundColor = backgroundColor;
-        addMouseListener(new MouseTest());
+
+        JLabel label = new JLabel(" ", SwingConstants.CENTER);
+        label.setFont(new Font("SansSerif", Font.BOLD, 12));
+        label.setForeground(Color.BLACK);
+        label.setText(Integer.toString(number));
+        add(label);
+
+        // add listener so this code can receive a callback when the user clicks on a pit
+        addMouseListener(new MouseHandler());
     }
 
     public void setCount(int count) {
@@ -20,8 +33,7 @@ public class PitView extends JPanel {
     }
 
     public void onClick() {
-        count++;
-        repaint();
+        boardView.onClick(player, number);
     }
 
     /**
@@ -34,6 +46,7 @@ public class PitView extends JPanel {
 
         setBackground(backgroundColor);
 
+        // calculate where to put the circle
         var center = new Point(getWidth() / 2, getHeight() / 2);
         var radius = getWidth() / 2 - 20;  // 20 for the gap
         var diameter = radius * 2;
@@ -43,7 +56,7 @@ public class PitView extends JPanel {
         g2d.fillOval(center.x - radius, center.y - radius, diameter, diameter);
 
         // Set font and color
-        Font font = new Font("Arial", Font.BOLD, 48);
+        Font font = new Font("SansSerif", Font.BOLD, 48);
         g2d.setFont(font);
         g2d.setColor(textColor);
         Rectangle rectangle = new Rectangle(getWidth(), getHeight());

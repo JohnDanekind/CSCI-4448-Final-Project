@@ -1,3 +1,3 @@
 public interface Viewer {
-    public void update();
+    public int update(int event);
 }

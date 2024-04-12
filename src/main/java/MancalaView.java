@@ -4,6 +4,8 @@ import javax.swing.*;
 public class MancalaView extends JPanel {
     String name;
     int count;
+    Color backgroundColor;
+    JLabel countText;
 
     public int getCount() {
         return count;
@@ -11,10 +13,12 @@ public class MancalaView extends JPanel {
 
     public void setCount(int count) {
         this.count = count;
+        repaint();
     }
 
-    public MancalaView(String name) {
+    public MancalaView(String name, Color backgroundColor) {
         this.name = name;
+        this.backgroundColor = backgroundColor;
         setLayout(new BorderLayout());
         setMinimumSize(new Dimension(200, 200));
         JLabel text = new JLabel();
@@ -22,7 +26,7 @@ public class MancalaView extends JPanel {
         text.setForeground(Color.WHITE);
         text.setText("       " + name + "       ");
 
-        JLabel countText = new JLabel("0", SwingConstants.CENTER);
+        countText = new JLabel("0", SwingConstants.CENTER);
         countText.setFont(new Font("SansSerif", Font.BOLD, 28));
         countText.setForeground(Color.BLACK);
         countText.setText(Integer.toString(count));
@@ -39,7 +43,7 @@ public class MancalaView extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        setBackground(Color.BLUE);
+        setBackground(backgroundColor);
 
         var center = new Point(getWidth() / 2, getHeight() / 2);
         var radius = getWidth() / 2 - 20;  // 20 for the gap
@@ -48,5 +52,8 @@ public class MancalaView extends JPanel {
         // draw circle
         g2d.setColor(Color.WHITE);
         g2d.fillOval(center.x - radius, center.y - radius * 2, diameter, diameter * 2);
+
+        // update label
+        countText.setText(Integer.toString(count));
     }
 }

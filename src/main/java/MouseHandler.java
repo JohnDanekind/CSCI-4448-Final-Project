@@ -1,10 +1,9 @@
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class MouseTest implements MouseListener {
+public class MouseHandler implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
-        //System.out.println("Mouse clicked " + e.toString());
 
         PitView pitView;
         if(e.getComponent() instanceof PitView) {
@@ -13,7 +12,6 @@ public class MouseTest implements MouseListener {
         }
 
     }
-
 
     @Override
     public void mousePressed(MouseEvent e) {
