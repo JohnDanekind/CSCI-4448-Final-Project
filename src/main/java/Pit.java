@@ -9,6 +9,10 @@ public class Pit {
         return stoneCount;
     }
 
+    public void setStoneCount(int stoneCount) {
+        this.stoneCount = stoneCount;
+    }
+
     public void addStones(int stoneCount) {
         this.stoneCount += stoneCount;
     }

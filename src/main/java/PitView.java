@@ -3,7 +3,7 @@ import javax.swing.*;
 
 public class PitView extends JPanel {
 
-    int count = 0;
+    int count = 4;
     Color pitColor = Color.WHITE;
     Color textColor = Color.BLACK;
     Color backgroundColor;
@@ -28,12 +28,32 @@ public class PitView extends JPanel {
     }
 
     public void setCount(int count) {
-        this.count = count;
-        repaint();
+        // if the count has changed, make beep sound
+        if(count != this.count) {
+            Toolkit.getDefaultToolkit().beep();  // make a clicking sound
+            textColor = Color.RED;
+            this.count = count;
+            repaint();  // calls paintComponent()
+            waitFor(150);
+        }
     }
 
     public void onClick() {
+        highlight();
         boardView.onClick(player, number);
+        pitColor = Color.WHITE;
+        textColor = Color.BLACK;
+        repaint();
+    }
+
+    public void unHighlight() {
+        textColor = Color.BLACK;
+        repaint();
+    }
+
+    public void highlight() {
+        textColor = Color.RED;
+        repaint();
     }
 
     /**
@@ -55,7 +75,7 @@ public class PitView extends JPanel {
         g2d.setColor(pitColor);
         g2d.fillOval(center.x - radius, center.y - radius, diameter, diameter);
 
-        // Set font and color
+        // Set font and color, draw text
         Font font = new Font("SansSerif", Font.BOLD, 48);
         g2d.setFont(font);
         g2d.setColor(textColor);
@@ -81,6 +101,15 @@ public class PitView extends JPanel {
         g.setFont(font);
         // Draw the String
         g.drawString(text, x, y);
+    }
+
+    private void waitFor(int millis) {
+        try {
+            Thread.sleep(millis);
+        }
+        catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
     }
 
 }

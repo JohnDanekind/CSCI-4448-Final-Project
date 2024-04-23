@@ -4,17 +4,23 @@ import java.awt.*;
 public class BoardView implements Viewer{
     JFrame frame = new JFrame("Mancala");
     JPanel centerPanel = new JPanel();
+    JPanel topPanel = new JPanel();
+    JLabel topLabel;
     PitView[] p1PitViews = new PitView[6];
     PitView[] p2PitViews = new PitView[6];
     MancalaView leftMancalaView;
     MancalaView rightMancalaView;
     Viewable board;
+    String topMessage = "Mancala";
+    int move;
+    Color p1Color = new Color(52, 197, 23);
+    Color p2Color = new Color(86, 147, 250);
 
     public BoardView(Viewable board) {
         this.board = board;
 
-        leftMancalaView = new MancalaView(board.getPlayer(2).getName(), Color.BLUE);
-        rightMancalaView = new MancalaView(board.getPlayer(1).getName(), Color.GREEN);
+        leftMancalaView = new MancalaView(board.getPlayer(2).getName(), p2Color);
+        rightMancalaView = new MancalaView(board.getPlayer(1).getName(), p1Color);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // end the program if the user closes the window
         frame.setLayout(new BorderLayout(0, 0));
@@ -22,31 +28,30 @@ public class BoardView implements Viewer{
 
         // add pitViews for player 2 to center panel
         for(int i = 5; i >= 0; i--) {
-            p2PitViews[i] = new PitView(this, 1, i, Color.BLUE);
+            p2PitViews[i] = new PitView(this, 2, i, p2Color);
             p2PitViews[i].setCount(board.getPitCount(board.getPlayer(2), i));
             centerPanel.add(p2PitViews[i]);
         }
 
         // add pitViews for player 1 to center panel
         for(int i = 0; i < 6; i++) {
-            p1PitViews[i] = new PitView(this, 2, i, Color.GREEN);
+            p1PitViews[i] = new PitView(this, 1, i, p1Color);
             p1PitViews[i].setCount(board.getPitCount(board.getPlayer(1), i));
             centerPanel.add(p1PitViews[i]);
         }
 
+        // add pits and mancalas
         frame.add(centerPanel, BorderLayout.CENTER);
         frame.add(leftMancalaView, BorderLayout.WEST);
         frame.add(rightMancalaView, BorderLayout.EAST);
 
         // Top section of board
-        Panel topPanel = new Panel();
         topPanel.setLayout(new FlowLayout());
-        JLabel p1Label = new JLabel();
-        p1Label.setText("Player 1: ");
-        JLabel p2Label = new JLabel();
-        p2Label.setText("Player 2: 0");
-        topPanel.add(p1Label);
-        topPanel.add(p2Label);
+        topLabel = new JLabel();
+        topLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        topLabel.setForeground(Color.BLACK);
+        topLabel.setText(topMessage);
+        topPanel.add(topLabel);
         frame.add(topPanel, BorderLayout.NORTH);
 
         frame.setSize(1300, 400);
@@ -54,18 +59,31 @@ public class BoardView implements Viewer{
     }
 
     public void onClick(int player, int pit) {
-        System.out.printf("Click on player %d, pit %d", player, pit);
+        // only update the move if the user clicked on one of their pits,
+        // ignore clicks on the other player's pits or pits that have zero stones
+        if(board.getCurrentPlayer().getNumber() == player) {
+            // clicking on a pit with zero stones is not a valid move; ignore move if invalid
+            if(board.getPitCount(board.getPlayer(player), pit) != 0) {
+                // clicking on a pit with zero stones is not a valid move
+                move = pit;
+                board.setMove(pit);
+            }
+        }
     }
 
     public int update(int event) {
-        if(event == Event.MOVE_REQUEST) {
 
+        Player p1 = board.getPlayer(1);
+        Player p2 = board.getPlayer(2);
+
+        if(event == Event.WAITING_FOR_MOVE) {
+            topMessage = "Waiting for " + board.getCurrentPlayer().getName() + "'s move";
+            topLabel.setText(topMessage);
         }
 
-        if(event == Event.UPDATE) {
-
-            Player p1 = board.getPlayer(1);
-            Player p2 = board.getPlayer(2);
+        if(event == Event.MOVE) {
+            topMessage = board.getCurrentPlayer().getName() + "'s move";
+            topLabel.setText(topMessage);
 
             // update the pit views
             for (int i = 0; i < 6; i++) {
@@ -78,7 +96,33 @@ public class BoardView implements Viewer{
             rightMancalaView.setCount(board.getMancalaCount(p1));
         }
 
-        return -1;
-        
+        if(event == Event.MOVE_COMPLETE) {
+            waitFor(1500);
+
+            // update the pit views
+            for (int i = 0; i < 6; i++) {
+                p1PitViews[i].unHighlight();
+                p2PitViews[i].unHighlight();
+            }
+            leftMancalaView.unHighlight();
+            rightMancalaView.unHighlight();
+            waitFor(1000);  // let viewers see the board for a bit before updating
+        }
+
+        if(board.isWinner()) {
+            // pause
+            waitFor(10000); // wait 10 seconds before exiting
+        }
+
+        return 0;
+    }
+
+    private void waitFor(int millis) {
+        try {
+            Thread.sleep(millis);
+        }
+        catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
     }
 }
