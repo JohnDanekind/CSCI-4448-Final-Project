@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class TextBoardView implements Viewer{
+public class TextBoardView implements Viewer {
     Viewable board;
     int moveCount;
 
@@ -11,14 +11,6 @@ public class TextBoardView implements Viewer{
     }
 
     public int update(int event) {
-
-        if(event == Event.WAITING_FOR_MOVE) {
-            // do nothing
-        }
-
-        if(event == Event.MOVE) {
-            // do nothing
-        }
 
         if(event == Event.MOVE_COMPLETE) {
             Player p1 = board.getPlayer(1);
@@ -45,7 +37,14 @@ public class TextBoardView implements Viewer{
 
             if(board.isWinner()) {
                 System.out.println("**** Game over ****");
-                System.out.println(board.getWinner().getName() + " is the winner!\n\n");
+
+                // if the game results in a tie
+                if(board.getMancalaCount(p1) == board.getMancalaCount(p2)) {
+                    System.out.println("Game resulted in a tie! \n\n");
+                }
+                else {
+                    System.out.println(board.getWinner().getName() + " is the winner!\n\n");
+                }
             }
         }
 
