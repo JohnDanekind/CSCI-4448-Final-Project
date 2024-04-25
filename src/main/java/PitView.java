@@ -24,7 +24,7 @@ public class PitView extends JPanel {
         add(label);
 
         // add listener so this code can receive a callback when the user clicks on a pit
-        addMouseListener(new MouseHandler());
+        addMouseListener(MouseHandler.getInstance());
     }
 
     public void setCount(int count) {
