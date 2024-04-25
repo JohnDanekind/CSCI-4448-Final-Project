@@ -66,14 +66,16 @@ public class Board implements Viewable, Cloneable {
                 // if the last stone is placed in an empty pit on the player's side, move all
                 // stones from the opposite pit on the other player's side to this player's mancala
                 if(stoneCount == 0) {
-                    int oppositePit = 5 - i;  // the math just works
+                    int oppositePit = 5 - i;  // calculate opposite pit
                     int oppositePitCount;
-                    if(player.getNumber() == 1 && p1Pits[i].getStoneCount() == 0) {
+                    if(player.getNumber() == 1 && p1Pits[i].getStoneCount() == 1) {
+
                         oppositePitCount = p2Pits[oppositePit].removeAllStones();
                         p1Mancala.addStones(oppositePitCount);
                         System.out.println("******* Empty pit bonus! ********");
                     }
-                    else if (p2Pits[i].getStoneCount() == 0) {
+                    else if (p2Pits[i].getStoneCount() == 1) {
+
                         oppositePitCount = p1Pits[oppositePit].removeAllStones();
                         p2Mancala.addStones(oppositePitCount);
                         System.out.println("******* Empty pit bonus! ********");

@@ -6,7 +6,7 @@ public class TestGame {
     @Test
     @DisplayName("test game")
     public void testGame() {
-        Game game = new Game();
+        Game game = GameFactory.createGame("p1", "p2", "human", "fullestPit", true, true);
         game.start();
         Assertions.assertTrue(true);
     }

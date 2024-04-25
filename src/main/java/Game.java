@@ -1,29 +1,32 @@
 public class Game {
     Board board;
-    Player player1 = new Player("Fullest pit", 1);
-    Player player2 = new Player("Random", 2);
+    Player player1;
+    Player player2;
     BoardView boardView;
     TextBoardView textBoardView;
     Player currentPlayer;
-    MancalaStrategy randomStrategy;
-    MancalaStrategy minMaxStrategy;
-    MancalaStrategy fullestPitStrategy;
+    MancalaStrategy p1Strategy;
+    MancalaStrategy p2Strategy;
 
     // TODO: turn this into a factory pattern
-    public Game() {
+    public Game(Player player1, Player player2) {
         // the board
+        this.player1 = player1;
+        this.player2 = player2;
         board = new Board(player1, player2);
+    }
 
-        // board views
-        textBoardView = new TextBoardView(board);
-        board.addViewer(textBoardView);
-        boardView = new BoardView(board);
-        board.addViewer(boardView);
+    public void setStrategy(Player player, MancalaStrategy strategy) {
+        if(player.getNumber() == 1) {
+            this.p1Strategy = strategy;
+        }
+        else {
+            this.p2Strategy = strategy;
+        }
+    }
 
-        // strategies
-        randomStrategy = new RandomStrategy();
-        minMaxStrategy = new MinMaxStrategy();
-        fullestPitStrategy = new FullestPitStrategy();
+    public Board getBoard() {
+        return board;
     }
 
     public void start() {
@@ -35,13 +38,11 @@ public class Game {
             currentPlayer = nextPlayer();  // switch players
 
             if(currentPlayer.getNumber() == 1) {
-                // get move from the human player
-                move = board.getMove(currentPlayer);
-
-                //move = fullestPitStrategy.getNextMove(board, currentPlayer);
+                // get move for player 1
+                move = p1Strategy.getNextMove(board, currentPlayer);
             }
             else {
-                move = randomStrategy.getNextMove(board, currentPlayer);
+                move = p2Strategy.getNextMove(board, currentPlayer);
             }
 
             // do the move

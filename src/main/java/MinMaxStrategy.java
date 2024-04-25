@@ -14,4 +14,6 @@ public class MinMaxStrategy implements MancalaStrategy {
         return move;
     }
 
+
+
 }
