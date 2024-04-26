@@ -14,39 +14,44 @@ public class GameFactory {
 
         Game game = new Game(player1, player2);
 
-        // Player 1
-        if(p1Strategy.equals("random")) {
-            game.setStrategy(player1, new RandomStrategy());
+        switch (p1Strategy) {
+            case "random":
+                game.setStrategy(player1, new RandomStrategy());
+                break;
+
+            case "human":
+                game.setStrategy(player1, new HumanStrategy());
+                break;
+
+            case "fullestPit":
+                game.setStrategy(player1, new FullestPitStrategy());
+                break;
+
+            case "minMax":
+                game.setStrategy(player1, new MinMaxStrategy());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid strategy name");
         }
 
-        if(p1Strategy.equals("human")) {
-            game.setStrategy(player1, new HumanStrategy());
-        }
+        switch (p2Strategy) {
+            case "random":
+                game.setStrategy(player2, new RandomStrategy());
+                break;
 
-        if(p1Strategy.equals("fullestPit")) {
-            game.setStrategy(player1, new FullestPitStrategy());
-        }
+            case "human":
+                game.setStrategy(player2, new HumanStrategy());
+                break;
 
-        if(p1Strategy.equals("minMax")) {
-            game.setStrategy(player1, new MinMaxStrategy());
-        }
+            case "fullestPit":
+                game.setStrategy(player2, new FullestPitStrategy());
+                break;
 
-
-        // Player 2
-        if(p2Strategy.equals("random")) {
-            game.setStrategy(player2, new RandomStrategy());
-        }
-
-        if(p2Strategy.equals("human")) {
-            game.setStrategy(player2, new HumanStrategy());
-        }
-
-        if(p2Strategy.equals("fullestPit")) {
-            game.setStrategy(player2, new FullestPitStrategy());
-        }
-
-        if(p2Strategy.equals("minMax")) {
-            game.setStrategy(player2, new MinMaxStrategy());
+            case "minMax":
+                game.setStrategy(player2, new MinMaxStrategy());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid strategy name");
         }
 
         // add a text board view, if requested
