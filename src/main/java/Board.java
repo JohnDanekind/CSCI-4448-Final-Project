@@ -21,6 +21,7 @@ public class Board implements Viewable, Cloneable {
     public Board(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
+        currentPlayer = player1;
 
         // create pits
         for(int i = 0; i < PITCOUNT; i++) {
@@ -32,19 +33,19 @@ public class Board implements Viewable, Cloneable {
         p2Mancala = new Mancala();
     }
 
-    public void move(Player player, int pit) {
-        currentPlayer = player;
+    public void move(int pit) {
         currentMove = pit;
+        boolean repeatTurn = false;
 
         // draw the board
-        updateViews(player);
+        updateViews(currentPlayer);
 
         // take current player and select pit within the specified range of pits
         // empty all the stones from selected pit and distribute them
         int stoneCount;
 
         // remove all the stones from the chosen pit
-        if(player.getNumber() == 1)
+        if(currentPlayer.getNumber() == 1)
             stoneCount = p1Pits[pit].removeAllStones();
         else
             stoneCount = p2Pits[pit].removeAllStones();
@@ -57,7 +58,7 @@ public class Board implements Viewable, Cloneable {
                 if(pit >= PITCOUNT)
                     continue;
 
-                if(player.getNumber() == 1)
+                if(currentPlayer.getNumber() == 1)
                     p1Pits[i].addStones(1);
                 else
                     p2Pits[i].addStones(1);
@@ -68,7 +69,7 @@ public class Board implements Viewable, Cloneable {
                 if(stoneCount == 0) {
                     int oppositePit = 5 - i;  // calculate opposite pit
                     int oppositePitCount;
-                    if(player.getNumber() == 1 && p1Pits[i].getStoneCount() == 1) {
+                    if(currentPlayer.getNumber() == 1 && p1Pits[i].getStoneCount() == 1) {
 
                         oppositePitCount = p2Pits[oppositePit].removeAllStones();
                         p1Mancala.addStones(oppositePitCount);
@@ -82,36 +83,57 @@ public class Board implements Viewable, Cloneable {
                     }
                 }
 
-                updateViews(player);
+                updateViews(currentPlayer);
             }
 
             // if there are still stones to distribute, add a stone to this player's mancala
             if(stoneCount > 0) {
-                if(player.getNumber() == 1)
+
+                if(currentPlayer.getNumber() == 1) {
+                    if(stoneCount == 1)
+                        repeatTurn = true;
                     p1Mancala.addStones(1);
-                else
+                }
+                else {
+                    if(stoneCount == 1)
+                        repeatTurn = true;
                     p2Mancala.addStones(1);
+                }
                 stoneCount--;
-                updateViews(player);
+                updateViews(currentPlayer);
             }
 
             // if there are still stones to distribute, put the remaining stones in the other player's pits
             if(stoneCount > 0) {
                 for(int i = 0; i < PITCOUNT && stoneCount > 0; i++ ) {
-                    if(player.getNumber() == 1)
+                    if(currentPlayer.getNumber() == 1)
                         p2Pits[i].addStones(1);
                     else
                         p1Pits[i].addStones(1);
                     stoneCount--;
-                    updateViews(player);
+                    updateViews(currentPlayer);
                 }
             }
+
+
             pit = 0; // reset the pit for the next loop
         }
 
         // Tell the views the move is complete
         for(Viewer viewer : viewers) {
             viewer.update(Event.MOVE_COMPLETE);
+        }
+
+        // switch players
+        if( ! repeatTurn) {
+            if(currentPlayer.getNumber() == 1)
+                currentPlayer = player2;
+            else
+                currentPlayer = player1;
+        }
+        else {
+            // reset the repeat boolean
+            repeatTurn = false;
         }
     }
 
@@ -266,6 +288,9 @@ public class Board implements Viewable, Cloneable {
     }
 
     public Player getWinner() {
+        if(p1Mancala.getStoneCount() == p2Mancala.getStoneCount())
+            return null;
+
         return winner;
     }
 

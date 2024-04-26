@@ -7,6 +7,7 @@ public class Game {
     Player currentPlayer;
     MancalaStrategy p1Strategy;
     MancalaStrategy p2Strategy;
+    Player winner;
 
     // TODO: turn this into a factory pattern
     public Game(Player player1, Player player2) {
@@ -35,7 +36,7 @@ public class Game {
         // keep looping until there is a winner
         while( ! board.isWinner())
         {
-            currentPlayer = nextPlayer();  // switch players
+            currentPlayer = board.getCurrentPlayer();
 
             if(currentPlayer.getNumber() == 1) {
                 // get move for player 1
@@ -46,24 +47,23 @@ public class Game {
             }
 
             // do the move
-            board.move(currentPlayer, move);
+            board.move(move);
         }
 
         // game is over
+        winner = board.getWinner();
     }
 
-    private Player nextPlayer() {
-
-        // initial case
-        if(currentPlayer == null) {
-            return player1;
+    public int getWinnerPlayerNumber() {
+        // if the game is a tie, winner will be null
+        if(winner == null) {
+            // return 0 to indicate a tie
+            return 0;
         }
 
-        if(currentPlayer == player1) {
-            return player2;
-        }
+        // return winner's player number
+        return winner.getNumber();
 
-        return player1;
     }
 
 }
