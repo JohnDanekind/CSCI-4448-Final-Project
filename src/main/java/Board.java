@@ -83,6 +83,7 @@ public class Board implements Viewable, Cloneable {
                     }
                 }
 
+                // update for stones on players own side
                 updateViews(currentPlayer);
             }
 
@@ -100,6 +101,7 @@ public class Board implements Viewable, Cloneable {
                     p2Mancala.addStones(1);
                 }
                 stoneCount--;
+                // update for stones in players mancala
                 updateViews(currentPlayer);
             }
 
@@ -111,6 +113,7 @@ public class Board implements Viewable, Cloneable {
                     else
                         p1Pits[i].addStones(1);
                     stoneCount--;
+                    // update for stones on opposite side
                     updateViews(currentPlayer);
                 }
             }

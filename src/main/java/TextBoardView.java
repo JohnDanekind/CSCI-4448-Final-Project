@@ -11,7 +11,7 @@ public class TextBoardView implements Viewer {
     }
 
     public int update(int event) {
-
+         // after the move completes print out message of move
         if(event == Event.MOVE_COMPLETE) {
             Player p1 = board.getPlayer(1);
             Player p2 = board.getPlayer(2);

@@ -84,11 +84,13 @@ public class BoardView implements Viewer {
         Player p1 = board.getPlayer(1);
         Player p2 = board.getPlayer(2);
 
+        // while waiting for a move, print this message
         if(event == Event.WAITING_FOR_MOVE) {
             topMessage = "Waiting for " + board.getCurrentPlayer().getName() + "'s move";
             topLabel.setText(topMessage);
         }
 
+        // during the move print message and update pitview and mancala view
         if(event == Event.MOVE) {
             topMessage = board.getCurrentPlayer().getName() + "'s move";
             topLabel.setText(topMessage);
@@ -104,6 +106,7 @@ public class BoardView implements Viewer {
             rightMancalaView.setCount(board.getMancalaCount(p1));
         }
 
+        // if the move is complete then wait for 1.5 seconds
         if(event == Event.MOVE_COMPLETE) {
             waitFor(1500);
 
@@ -117,6 +120,7 @@ public class BoardView implements Viewer {
             waitFor(1000);  // let viewers see the board for a bit before updating
         }
 
+        // wait 10 seconds after the game is complete before exiting
         if(board.isWinner()) {
             // pause
             waitFor(10000); // wait 10 seconds before exiting
