@@ -33,8 +33,8 @@ public class PitView extends JPanel {
             Toolkit.getDefaultToolkit().beep();  // make a clicking sound
             textColor = Color.RED;
             this.count = count;
-            repaint();  // calls paintComponent()
-            waitFor(150);
+            repaint();  // calls paintComponent() to redraw the pit view
+            waitFor(150);  // give the user time to see the change in the UI
         }
     }
 

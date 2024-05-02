@@ -19,7 +19,6 @@ public class GameFactory {
                 game.setStrategy(player1, new RandomStrategy());
                 break;
 
-
             case "human":
                 game.setStrategy(player1, new HumanStrategy());
                 break;

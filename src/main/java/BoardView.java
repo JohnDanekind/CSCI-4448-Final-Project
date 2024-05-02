@@ -19,14 +19,19 @@ public class BoardView implements Viewer {
     public BoardView(Viewable board) {
         this.board = board;
 
+        // create view for left and right mancala
         leftMancalaView = new MancalaView(board.getPlayer(2).getName(), p2Color);
         rightMancalaView = new MancalaView(board.getPlayer(1).getName(), p1Color);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // end the program if the user closes the window
+
+        // Use a "Border Layout to arrange the UI components
         frame.setLayout(new BorderLayout(0, 0));
+
+        // center panel has a 2x6 grid layout to hold the pit views
         centerPanel.setLayout(new GridLayout(2,6, 0, 0));
 
-        // add pitViews for player 2 to center panel
+        // add pitViews for player 2 to center panel, backwards for player 2, on the top row
         for(int i = 5; i >= 0; i--) {
             p2PitViews[i] = new PitView(this, 2, i, p2Color);
             p2PitViews[i].setCount(board.getPitCount(board.getPlayer(2), i));
@@ -45,7 +50,7 @@ public class BoardView implements Viewer {
         frame.add(leftMancalaView, BorderLayout.WEST);
         frame.add(rightMancalaView, BorderLayout.EAST);
 
-        // Top section of board
+        // Top section of board has text to show what is going on in the game
         topPanel.setLayout(new FlowLayout());
         topLabel = new JLabel();
         topLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
@@ -54,10 +59,12 @@ public class BoardView implements Viewer {
         topPanel.add(topLabel);
         frame.add(topPanel, BorderLayout.NORTH);
 
+        // set the window size and make it visible
         frame.setSize(1300, 400);
         frame.setVisible(true);
     }
 
+    // Handle mouse clicks; this will be called by a pitView
     public void onClick(int player, int pit) {
         // only update the move if the user clicked on one of their pits,
         // ignore clicks on the other player's pits or pits that have zero stones
@@ -71,6 +78,7 @@ public class BoardView implements Viewer {
         }
     }
 
+    // Handle events
     public int update(int event) {
 
         Player p1 = board.getPlayer(1);
