@@ -9,7 +9,7 @@ public class Game {
     MancalaStrategy p2Strategy;
     Player winner;
 
-    // TODO: turn this into a factory pattern
+
     public Game(Player player1, Player player2) {
         // the board
         this.player1 = player1;
