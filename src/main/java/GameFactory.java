@@ -19,6 +19,7 @@ public class GameFactory {
                 game.setStrategy(player1, new RandomStrategy());
                 break;
 
+
             case "human":
                 game.setStrategy(player1, new HumanStrategy());
                 break;
@@ -27,9 +28,14 @@ public class GameFactory {
                 game.setStrategy(player1, new FullestPitStrategy());
                 break;
 
+            case "leastFullPit":
+                game.setStrategy(player1, new LeastFullPitStrategy());
+                break;
+
             case "minMax":
                 game.setStrategy(player1, new MinMaxStrategy());
                 break;
+
             default:
                 throw new IllegalArgumentException("Invalid strategy name");
         }
@@ -45,6 +51,10 @@ public class GameFactory {
 
             case "fullestPit":
                 game.setStrategy(player2, new FullestPitStrategy());
+                break;
+
+            case "leastFullPit":
+                game.setStrategy(player2, new LeastFullPitStrategy());
                 break;
 
             case "minMax":

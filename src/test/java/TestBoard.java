@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class TestBoard {
     @Test
     @DisplayName("test game")
-    @Disabled
+
     public void testBoardClone() {
         Player player1 = new Player("A", 1);
         Player player2 = new Player("B", 2);

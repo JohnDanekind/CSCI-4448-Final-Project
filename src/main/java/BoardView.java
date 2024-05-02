@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class BoardView implements Viewer{
+public class BoardView implements Viewer {
     JFrame frame = new JFrame("Mancala");
     JPanel centerPanel = new JPanel();
     JPanel topPanel = new JPanel();
