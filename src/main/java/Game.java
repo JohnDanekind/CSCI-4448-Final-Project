@@ -30,6 +30,7 @@ public class Game {
         return board;
     }
 
+    // Main game play loop
     public void start() {
         int move;
 

@@ -27,6 +27,9 @@ different design patterns throughout the implementation. This includes an observ
 GUI to communicate with each other, a strategy pattern for selecting the next move, a singleton to ensure events caused by the mouse clicking
 only occur once, and a factory for setting up a given game with certain configurations.
 
+## Gameplay Example  ##
+![Observers.png](Observers.png)
+
 ## Information for  the Graders: ##
 All the BDD tests, the UML diagram, screenshots of code coverage, and other important information 
 can be found in a PDF called "**Final Project Deliverables**"

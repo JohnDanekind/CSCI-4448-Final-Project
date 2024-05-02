@@ -13,6 +13,7 @@ public class TestGame {
         int p2wins = 0;
         int ties = 0;
 
+        // play 100 games
         for(int i = 0; i < 100; i++) {
 
             Game game = GameFactory.createGame("minMax", "random", "minMax", "random", false, false);
