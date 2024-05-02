@@ -1,3 +1,4 @@
+// all the required methods for the viewers (Observers)
 public interface Viewable {
     public void addViewer(Viewer viewer);
     public int getPitCount(Player player, int pit);

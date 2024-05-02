@@ -24,9 +24,9 @@ public class TestBoard {
         Assertions.assertTrue(newCount == count );
         Assertions.assertEquals(99, copyCount);
     }
+
     @Test
     @DisplayName("test move")
-
     public void testMove() {
         Player player1 = new Player("A", 1);
         Player player2 = new Player("B", 2);
@@ -36,6 +36,7 @@ public class TestBoard {
         // chose p0 and confirm that the board looks correct after the move
         board.move(0);
 
+        // test that boards pit counts are as expected
         Assertions.assertEquals(0, board.getPitCount(player1, 0));
         Assertions.assertEquals(5, board.getPitCount(player1, 1));
         Assertions.assertEquals(5, board.getPitCount(player1, 2));
